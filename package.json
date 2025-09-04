@@ -1,0 +1,22 @@
+{
+  "name": "kb_platform",
+  "private": true,
+  "type": "module",
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev:api": "cd apps/api && npm run dev",
+    "dev:worker": "cd apps/worker && npm run dev", 
+    "dev:web": "cd apps/web && npm run dev",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:worker\" \"npm run dev:web\"",
+    "pw:install": "cd apps/worker && npx playwright install",
+    "build": "npm run build --workspaces",
+    "clean": "rm -rf node_modules apps/*/node_modules apps/*/dist",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}

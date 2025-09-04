@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Job {
+  id          String   @id @default(cuid())
+  targetUrl   String
+  kind        String
+  status      String   @default("pending")
+  result      Json?
+  error       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("jobs")
+}
+
+model KnowledgeItem {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  source      String
+  embeddings  Json?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("knowledge_items")
+}
+
+model ChatSession {
+  id          String   @id @default(cuid())
+  messages    Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("chat_sessions")
+}
+
+model LinkCache {
+  id              String   @id @default(cuid())
+  url             String   @unique
+  title           String?
+  description     String?
+  domain          String
+  contentType     String   @default("unknown") // blog, news, documentation, etc.
+  status          String   @default("active") // active, inactive, error, blocked
+  lastScraped     DateTime?
+  nextScrape      DateTime?
+  scrapeInterval  Int      @default(86400) // seconds (24 hours default)
+  priority        Int      @default(5) // 1-10, higher = more important
+  successCount    Int      @default(0)
+  errorCount      Int      @default(0)
+  lastError       String?
+  metadata        Json?
+  tags            String[] @default([])
+  discoveredFrom  String? // URL that led to this link
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  scrapes         LinkScrape[]
+
+  @@map("link_cache")
+}
+
+model LinkScrape {
+  id          String   @id @default(cuid())
+  linkId      String
+  jobId       String?
+  status      String   @default("pending") // pending, processing, completed, failed
+  result      Json?
+  error       String?
+  scrapedAt   DateTime @default(now())
+  duration    Int? // milliseconds
+
+  // Relations
+  link        LinkCache @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@map("link_scrapes")
+}
+
+model LinkDiscovery {
+  id              String   @id @default(cuid())
+  sourceUrl       String
+  discoveredUrl   String
+  context         String? // surrounding text or description
+  confidence      Float    @default(0.5) // 0-1, how confident we are this is relevant
+  discoveredAt    DateTime @default(now())
+
+  @@map("link_discoveries")
+}

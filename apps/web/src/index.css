@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import highlight.js theme for syntax highlighting */
+@import 'highlight.js/styles/github.css';
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
+  }
+  
+  .input {
+    @apply px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+  }
+  
+  /* Markdown viewer styles */
+  .prose {
+    @apply text-gray-700;
+  }
+  
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    @apply text-gray-900 font-semibold;
+  }
+  
+  .prose code {
+    @apply bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-sm font-mono;
+  }
+  
+  .prose pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-auto;
+  }
+  
+  .prose pre code {
+    @apply bg-transparent text-gray-100 p-0;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-blue-500 pl-4 py-2 bg-blue-50 text-gray-700 italic;
+  }
+  
+  .prose table {
+    @apply border border-gray-200 rounded-lg overflow-hidden;
+  }
+  
+  .prose thead {
+    @apply bg-gray-50;
+  }
+  
+  .prose th {
+    @apply px-4 py-2 text-left text-sm font-semibold text-gray-700 border-b border-gray-200;
+  }
+  
+  .prose td {
+    @apply px-4 py-2 text-sm text-gray-600 border-b border-gray-100;
+  }
+  
+  .prose a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+  
+  .prose img {
+    @apply max-w-full h-auto rounded-lg shadow-sm;
+  }
+}
